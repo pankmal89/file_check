@@ -1,25 +1,21 @@
 ---
-
-- hosts: all 
+- hosts: all
   become: true
   vars_files:
-        - files_list.yml
+    - files_list.yml
   tasks:
-    - name: check current checksum
+    - name: checking checksup
       stat:
-        path: "{{ itsm.name }}"
-      with_items:
-        - "{{ files }}"
+        path: "{{ item.name }}"
+      with_items: "{{files}}"
       register: test
-    - debug:
-        msg: "checksum matched" 
-      when: '"{{item.item.checksum}}" == "{{item.stat.checksum}}"'
-
-      loop: "{{ test.results }}"
 
     - debug:
-        msg: "checksum not match"
-      when: '"{{item.item.checksum}}" != "((item.stat.checksum}}"'
+        msg : "checksum matched"
+      when: '"{{ item.item.checksum }}" == "{{ item.stat.checksum }}"'
+      with_items: "(( test.result }}"
 
-      loop: "{{ test.results }}"
-
+    - debug:
+        msg: "checksum not matched"
+      when: '"{{item.item.checksum}}" =! "{{item.stat.checksum}}"'
+      with_items: "{{ test.results }}"
