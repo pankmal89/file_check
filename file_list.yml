@@ -1,9 +1,0 @@
-files:
-        - name: /tmp/abc1.txt
-          checksum: "da39a3ee5a6b4b" abc1.txt
-        - name: /tmp/abc2.txt
-          checksum: "da29a3eerb6a" abc2.txt
-        - name: /tmp/abc3.txt
-          checksum: "da39a3ee5e6b4b0d" abc3.txt
-
-
