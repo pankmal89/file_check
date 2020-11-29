@@ -1,0 +1,25 @@
+---
+- name: playbook for checksum
+  hosts: all
+  become: true
+  vars_files:
+    - files_list.yml
+  tasks:
+    - name: checking current checksum
+      stat:
+        path: "{{ item.name }}"
+        register: test
+      with_items: "{{ files }}"
+
+    - name: checksum match
+      debug:
+        msg: 'checksum matched'
+      when: '"{{ item.item.checksum}} == {{item.stat.checksum}}"'
+      with_items: "{{ test.results }}"
+
+    - name: checksum not  match
+      debug:
+        msg: 'checksum not  matched'
+      when: '"{{ item.item.checksum}} !=: {{item.stat.checksum}}"'
+      with_items: "{{ test.results }}"
+    

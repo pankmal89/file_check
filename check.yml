@@ -1,0 +1,25 @@
+---
+- name: creating play for checksum
+  hosts: all
+  become: true
+  vars_files:
+    - files_list.yml
+  tasks:
+    - name: checking checksum for current
+      stat:
+        path: "{{item.name}}"
+        register: test
+      with_items: "{{files}}"
+
+    - name: checksum matched
+      debug:
+        msg: 'checksum matched'
+        when: '"{{item.item.checksum}} == {{item.stat.checksum}}"'
+      with_items: "{{ files }}"
+
+    - name: checksum not matched
+      debug:
+        msg: 'checksum not  matched'
+      when: '"{{item.item.checksum}} =! {{item.stat.checksum}}"'
+      with_items: "{{ files }}"
+ 
